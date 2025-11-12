@@ -1,0 +1,510 @@
+Could you speak a little slower?
+Could you speak a little slower.
+你能说慢一点吗？
+Could you speak a little slower.
+Where is the nearest subway station?
+Where is the nearest subway station?
+最近的地铁站在哪里？
+Where is the nearest subway station?
+I'd like a medium latte, please.
+I'd like a medium latte, please.
+请给我一杯中杯拿铁。
+I'd like a medium latte, please.
+The meeting has been rescheduled to Friday.
+The meeting has been rescheduled to Friday.
+会议改期到周五。
+The meeting has been rescheduled to Friday.
+Do you accept credit cards here?
+Do you accept credit cards here?
+这里接受信用卡吗？
+Do you accept credit cards here?
+How long does this package take to arrive?
+How long does this package take to arrive?
+这个包裹需要多久送达？
+How long does this package take to arrive?
+Let's grab lunch at the new Italian restaurant.
+Let's grab lunch at the new Italian restaurant.
+我们去新开的意大利餐厅吃午饭吧。
+Let's grab lunch at the new Italian restaurant.
+The WiFi password is on the bulletin board.
+The WiFi password is on the bulletin board.
+WiFi密码在公告板上。
+The WiFi password is on the bulletin board.
+Could you recommend a good movie?
+Could you recommend a good movie?
+你能推荐部好电影吗？
+Could you recommend a good movie?
+I need to renew my library book today.
+I need to renew my library book today.
+我今天需要续借图书馆的书。
+I need to renew my library book today.
+Is there a direct flight to New York?
+Is there a direct flight to New York?
+有直飞纽约的航班吗？
+Is there a direct flight to New York?
+How much is the AirPort shuttle fee?
+How much is the AirPort shuttle fee?
+机场接驳车费用是多少？
+How much is the AirPort shuttle fee?
+My luggage seems to be missing.
+My luggage seems to be missing.
+我的行李好像丢失了。
+My luggage seems to be missing.
+Could I have a window seat please?
+Could I have a window seat please?
+请给我一个靠窗的座位。
+Could I have a window seat please?
+The train departure is delayed by 30 minutes.
+The train departure is delayed by 30 minutes.
+火车出发时间延误30分钟。
+The train departure is delayed by 30 minutes.
+Where can I rent a bicycle? Here.
+Where can I rent a bicycle? Here.
+这里哪里可以租自行车？
+Where can I rent a bicycle? Here.
+This bus goes to the city centre, right?
+This bus goes to the city centre, right?
+这辆公交车是去市中心的，对吗？
+This bus goes to the city centre, right?
+I need a taxi with a child seat.
+I need a taxi with a child seat.
+我需要一辆带儿童座椅的出租车。
+I need a taxi with a child seat.
+Is tipping customary in this country?
+Is tipping customary in this country?
+这个国家有小费习惯吗？
+Is tipping customary in this country?
+The museum is closed on mondays.
+The museum is closed on mondays.
+博物馆每周一闭馆。
+The museum is closed on mondays.
+Can ipay the entrance fee by card.
+Can ipay the entrance fee by card.
+门票可以用卡支付吗？
+Can ipay the entrance fee by card.
+The hiking trail is slippery after rain.
+The hiking trail is slippery after rain.
+雨后徒步路线很滑。
+The hiking trail is slippery after rain.
+Where is the lost and found office?
+Where is the lost and found office?
+失物招领处在哪儿？
+Where is the lost and found office?
+I'd like to check in for my flight.
+I'd like to check in for my flight.
+我要办理航班值机。
+I'd like to check in for my flight.
+The ferry to the island leaves every hour.
+The ferry to the island leaves every hour.
+去岛上的渡轮，每小时一班。
+The ferry to the island leaves every hour.
+Are there any vegetarian options?
+Are there any vegetarian options?
+有素食选择吗？
+Are there any vegetarian options?
+Could you call a doctor for me?
+Could you call a doctor for me?
+能帮我叫医生吗？
+Could you call a doctor for me?
+The hotel provides free breakfast.
+The hotel provides free breakfast.
+酒店提供免费早餐。
+The hotel provides free breakfast.
+Is this street safe at night?
+Is this street safe at night?
+这条街晚上安全吗？
+Is this street safe at night?
+The souvenir shop accepts Euros.
+The souvenir shop accepts Euros.
+纪念品店接受欧元支付。
+The souvenir shop accepts Euros.
+Do you have this shirt in a larger size?
+Do you have this shirt in a larger size?
+这件衬衫有大一码的吗？
+Do you have this shirt in a larger size?
+Is this perfume tax free?
+Is this perfume tax free?
+这款香水免税吗？
+Is this perfume tax free?
+I'd like to return this defective item.
+I'd like to return this defective item.
+我想退回这件瑕疵品。
+I'd like to return this defective item.
+Can I try this dress on?
+Can I try this dress on?
+我可以试穿这条裙子吗？
+Can I try this dress on?
+The receipt is in the paper bag.
+The receipt is in the paper bag.
+车距在纸袋里。
+The receipt is in the paper bag.
+Are there any discounts for students?
+Are there any discounts for students?
+学生有折扣吗？
+Are there any discounts for students?
+This steak is undercooked.
+This steak is undercooked.
+这块牛排没煎熟。
+This steak is undercooked.
+Could I get the bill split?
+Could I get the bill split?
+可以分开结账吗？
+Could I get the bill split?
+The WiFi here is unstable.
+The WiFi here is unstable.
+这里的WiFi不稳定。
+The WiFi here is unstable.
+Is there a vegetarian menu?
+Is there a vegetarian menu?
+有素食菜单吗？
+Is there a vegetarian menu?
+How spicy is this dish?
+How spicy is this dish?
+这道菜有多辣？
+How spicy is this dish?
+Can I substitute fries with salad?
+Can I substitute fries with salad?
+薯条可以换成沙拉吗？
+Can I substitute fries with salad?
+This coffee is too bitter.
+This coffee is too bitter.
+这咖啡太苦了。
+This coffee is too bitter.
+Where is the fitting room?
+Where is the fitting room?
+试衣间在哪里？
+Where is the fitting room?
+Do you offer gift wrapping?
+Do you offer gift wrapping?
+提供礼品包装吗？
+Do you offer gift wrapping?
+The zipper on this bag is stuck.
+The zipper on this bag is stuck.
+这个包的拉链卡住了。
+The zipper on this bag is stuck.
+I'm allergic to peanuts.
+I'm allergic to peanuts.
+我对花生过敏。
+I'm allergic to peanuts.
+Can ipay with mobile payment.
+Can ipay with mobile payment.
+可以用手机支付吗？
+Can ipay with mobile payment.
+The cashier is over there.
+The cashier is over there.
+收银台在那边。
+The cashier is over there.
+This is the wrong order.
+This is the wrong order.
+这个餐点送错了。
+This is the wrong order.
+Let me confirm the meeting agenda.
+Let me confirm the meeting agenda.
+我来确认会议议程。
+Let me confirm the meeting agenda.
+The deadline is flexible.
+The deadline is flexible.
+截止日期可调整。
+The deadline is flexible.
+Could you forward the email chain?
+Could you forward the email chain?
+能转发邮件往来记录吗？
+Could you forward the email chain?
+I'll follow up with the client.
+I'll follow up with the client.
+我会跟进客户。
+I'll follow up with the client.
+The presentation needs more data.
+The presentation needs more data.
+演示需要更多数据支持。
+The presentation needs more data.
+Let's schedule a zoom call.
+Let's schedule a zoom call.
+我们安排个zoom会议吧。
+Let's schedule a zoom call.
+The budget has been approved.
+The budget has been approved.
+预算已获批。
+This morning。
+Can we extend the trial period。
+Can we extend the trial period。
+可以延长试用期吗？
+Can we extend the trial period。
+The contract needs legal review。
+The contract needs legal review。
+合同需法务审核。
+The contract needs legal review。
+I'll delegate this task to john。
+I'll delegate this task to john。
+我会把任务分派给john。
+I'll delegate this task to john。
+The printer is out of toer。
+The printer is out of toer。
+打印机没墨了。
+The printer is out of toer。
+Let's brainstorm some ideas。
+我们头脑风暴一下吧。
+Let's brainstorm some ideas.
+The quarterly report is overdue.
+The quarterly report is overdue.
+季度报告超期未交。
+The quarterly report is overdue.
+Can you share the screen?
+Can you share the screen?
+能共享屏幕吗？
+Can you share the screen?
+We need to cut costs by 10%.
+We need to cut costs by 10%.
+我们需要削减10%成本。
+We need to cut costs by 10%.
+每日半小时高效英语。
+The software update failed.
+The software update failed.
+软件更新失败。
+The software update failed.
+I'll send you the minutes later.
+I'll send you the minutes later.
+稍后发您会议纪要。
+I'll send you the minutes later.
+Let's prioritize urgent tasks.
+Let's prioritize urgent tasks.
+我们优先处理紧急任务。
+Let's prioritize urgent tasks.
+It's supposed to rain tomorrow.
+It's supposed to rain tomorrow.
+明天可能会下雨。
+It's supposed to rain tomorrow.
+Could you take a photo for us?
+Could you take a photo for us?
+能帮我们拍张照吗？
+Could you take a photo for us?
+The garbage truck comes on tuesdays.
+The garbage truck comes on tuesdays.
+垃圾车每周二来收垃圾。
+The garbage truck comes on tuesdays.
+My phone battery is dying.
+My phone battery is dying.
+我手机快没电了。
+My phone battery is dying.
+The faucet is leaking.
+The faucet is leaking.
+水龙头在漏水。
+The faucet is leaking.
+Do you know a good plumber?
+Do you know a good plumber?
+你认识靠谱的水管工吗？
+Do you know a good plumber?
+Let's carpool to save gas.
+Let's carpool to save gas.
+我们拼车省油费吧。
+Let's carpool to save gas.
+The air conditioner is broken.
+The air conditioner is broken.
+空调坏了。
+The air conditioner is broken.
+I locked myself out of the house.
+I locked myself out of the house.
+我把自己锁在门外了。
+I locked myself out of the house.
+The dog next door barks all night.
+The dog next door barks all night.
+隔壁的狗整晚叫。
+The dog next door barks all night.
+Can I borrow your charger?
+Can I borrow your charger?
+能借你的充电器吗？
+Can I borrow your charger?
+The gym opens at six am.
+The gym opens at six am.
+健身房早上6点开门。
+The gym opens at six am.
+The elevator is out of service.
+The elevator is out of service.
+电梯停用了。
+The elevator is out of service.
+Let's meet at the park entrance.
+Let's meet at the park entrance.
+我们在公园入口见。
+Let's meet at the park entrance.
+The milk has expired.
+The milk has expired.
+牛奶过期了。
+The milk has expired.
+Did you water the plants?
+Did you water the plants?
+你给植物浇水了吗？
+Did you water the plants?
+The traffic light isn't working.
+The traffic light isn't working.
+红绿灯坏了。
+The traffic light isn't working.
+I'm running low on cash.
+I'm running low on cash.
+我现金快用完了。
+I'm running low on cash.
+The key is under the doormat.
+The key is under the doormat.
+钥匙在门店下面。
+The key is under the doormat.
+Let's switch to a cheaper plan.
+Let's switch to a cheaper plan.
+我们换更便宜的套餐吧。
+Let's switch to a cheaper plan.
+Call an ambulance immediately.
+Call an ambulance immediately.
+快叫救护车。
+Call an ambulance immediately.
+I sprained my ankle.
+I sprained my ankle.
+我扭伤了脚踝。
+I sprained my ankle.
+Where is the nearest pharmacy?
+Where is the nearest pharmacy?
+最近的药店在哪儿？
+Where is the nearest pharmacy?
+My chest feels tight.
+My chest feels tight.
+我胸口发闷。
+My chest feels tight.
+There's a gas leak in the kitchen.
+There's a gas leak in the kitchen.
+厨房有煤气泄漏。
+There's a gas leak in the kitchen.
+I've been bitten by a mosquito.
+I've been bitten by a mosquito.
+我被蚊子咬了。
+I've been bitten by a mosquito.
+The fire alarm is going off.
+The fire alarm is going off.
+火警响了。
+The fire alarm is going off.
+I need a prescription refill.
+I need a prescription refill.
+我需要续处方药。
+I need a prescription refill.
+Someone fainted in the lobby.
+Someone fainted in the lobby.
+有人在大厅晕倒了。
+Someone fainted in the lobby.
+My passport was stolen.
+My passport was stolen.
+我的护照被偷了。
+My passport was stolen.
+喜欢这种学习方式，请关注我们。
+See you next time.
+每日半小时高效英语听力磨耳朵第5集。Did you sleep well?
+Did you sleep well?
+你睡得好吗？
+Did you sleep well?
+Yes, feeling rested.
+Yes, feeling rested.
+是的，感觉休息好了。
+Yes, feeling rested.
+Breakfast at home or out?
+Breakfast at home or out?
+在家吃早餐还是外面？
+Breakfast at home or out?
+Let's eat at home today.
+Let's eat at home today.
+今天在家吃吧。
+Let's eat at home today.
+Any mail for me?
+Any mail for me?
+有我的邮件吗？
+Any mail for me?
+Yes, there's a package.
+Yes, there's a package.
+有的，有个包裹。
+Yes, there's a package.
+How was the commute today?
+How was the commute today?
+你今天上班路上怎么样？
+How was the commute today?
+Surprisingly smooth.
+Surprisingly smooth.
+出乎意料的顺畅。
+Surprisingly smooth.
+Did you water the plants?
+Did you water the plants?
+你给植物浇水了吗？
+Did you water the plants?
+Not yet. I'll do it now.
+Not yet. I'll do it now.
+还没，我这就去。
+Not yet. I'll do it now.
+What time is lunch break?
+What time is lunch break?
+午餐休息什么时候开始？
+What time is lunch break?
+Around noon, I think.
+Around noon, I think.
+我想是中午左右。
+Around noon, I think.
+Any good restaurants nearby?
+Any good restaurants nearby?
+附近有好餐馆吗？
+Any good restaurants nearby?
+There's a new cafe down the street.
+There's a new cafe down the street.
+街那头新开了一家咖啡馆。
+There's a new cafe down the street.
+Ready for a coffee run?
+Ready for a coffee run?
+要不要去买咖啡？
+Ready for a coffee run?
+Yes, I'd love some.
+Yes, I'd love some.
+好的，我也想喝。
+Yes, I'd love some.
+Did you book the tickets?
+Did you book the tickets?
+你订好票了吗？
+Did you book the tickets?
+Yes, all set for Friday.
+Yes, all set for Friday.
+定好了，周五出发。
+Yes, all set for Friday.
+Need a hand with dinner?
+Need a hand with dinner?
+晚饭需要帮忙吗？
+Need a hand with dinner?
+Yes, chop some veggies.
+Yes, chop some veggies.
+要的，切些蔬菜吧。
+Yes, chop some veggies.
+Any weekend plans?
+Any weekend plans?
+周末有计划吗？
+Any weekend plans?
+Going hiking? Want to join?
+Going hiking? Want to join?
+要去爬山，一起来吗？
+Going hiking? Want to join?
+Did you finish that book?
+Did you finish that book?
+你看完那本书了吗？
+Did you finish that book?
+Halfway through, it's good.
+Halfway through, it's good.
+看了一半还挺好看的。
+Halfway through, it's good.
+How's your back feeling?
+How's your back feeling?
+你背怎么样，好些了吗？
+How's your back feeling?
+Better? Thanks for asking.
+Better? Thanks for asking.
+好多了，谢谢关心。
+Better? Thanks for asking.
+Did you lock the door?
+Did you lock the door?
+你锁门了吗？
+Did you lock the door?
+Yes, we're good to go.
+Yes, we're good to go.
+锁了，我们可以走了。
+Yes, we're good to go.
+Lunch at 12 or 1230.
+Lunch at 12 or 1230.
+中午12点吃还是12:30？
+Lunch at 12 or 1230.

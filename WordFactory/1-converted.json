@@ -1,0 +1,667 @@
+[
+  {
+    "id": "1762946933531",
+    "name": "实用英语对话集",
+    "createdAt": 1762946933531,
+    "items": [
+      {
+        "id": "1762946933530",
+        "chinese": "你能说慢一点吗？",
+        "english": "Could you speak a little slower?",
+        "type": "sentence",
+        "createdAt": 1762946933531
+      },
+      {
+        "id": "1762946933531",
+        "chinese": "最近的地铁站在哪里？",
+        "english": "Where is the nearest subway station?",
+        "type": "sentence",
+        "createdAt": 1762946933532
+      },
+      {
+        "id": "1762946933532",
+        "chinese": "请给我一杯中杯拿铁。",
+        "english": "I'd like a medium latte, please.",
+        "type": "sentence",
+        "createdAt": 1762946933533
+      },
+      {
+        "id": "1762946933533",
+        "chinese": "会议改期到周五。",
+        "english": "The meeting has been rescheduled to Friday.",
+        "type": "sentence",
+        "createdAt": 1762946933534
+      },
+      {
+        "id": "1762946933534",
+        "chinese": "这里接受信用卡吗？",
+        "english": "Do you accept credit cards here?",
+        "type": "sentence",
+        "createdAt": 1762946933535
+      },
+      {
+        "id": "1762946933535",
+        "chinese": "这个包裹需要多久送达？",
+        "english": "How long does this package take to arrive?",
+        "type": "sentence",
+        "createdAt": 1762946933536
+      },
+      {
+        "id": "1762946933536",
+        "chinese": "我们去新开的意大利餐厅吃午饭吧。",
+        "english": "Let's grab lunch at the new Italian restaurant.",
+        "type": "sentence",
+        "createdAt": 1762946933537
+      },
+      {
+        "id": "1762946933537",
+        "chinese": "WiFi密码在公告板上。",
+        "english": "The WiFi password is on the bulletin board.",
+        "type": "sentence",
+        "createdAt": 1762946933538
+      },
+      {
+        "id": "1762946933538",
+        "chinese": "你能推荐部好电影吗？",
+        "english": "Could you recommend a good movie?",
+        "type": "sentence",
+        "createdAt": 1762946933539
+      },
+      {
+        "id": "1762946933539",
+        "chinese": "我今天需要续借图书馆的书。",
+        "english": "I need to renew my library book today.",
+        "type": "sentence",
+        "createdAt": 1762946933540
+      },
+      {
+        "id": "1762946933540",
+        "chinese": "有直飞纽约的航班吗？",
+        "english": "Is there a direct flight to New York?",
+        "type": "sentence",
+        "createdAt": 1762946933541
+      },
+      {
+        "id": "1762946933541",
+        "chinese": "机场接驳车费用是多少？",
+        "english": "How much is the AirPort shuttle fee?",
+        "type": "sentence",
+        "createdAt": 1762946933542
+      },
+      {
+        "id": "1762946933542",
+        "chinese": "我的行李好像丢失了。",
+        "english": "My luggage seems to be missing.",
+        "type": "sentence",
+        "createdAt": 1762946933543
+      },
+      {
+        "id": "1762946933543",
+        "chinese": "请给我一个靠窗的座位。",
+        "english": "Could I have a window seat please?",
+        "type": "sentence",
+        "createdAt": 1762946933544
+      },
+      {
+        "id": "1762946933544",
+        "chinese": "火车出发时间延误30分钟。",
+        "english": "The train departure is delayed by 30 minutes.",
+        "type": "sentence",
+        "createdAt": 1762946933545
+      },
+      {
+        "id": "1762946933545",
+        "chinese": "这里哪里可以租自行车？",
+        "english": "Where can I rent a bicycle? Here.",
+        "type": "sentence",
+        "createdAt": 1762946933546
+      },
+      {
+        "id": "1762946933546",
+        "chinese": "这辆公交车是去市中心的，对吗？",
+        "english": "This bus goes to the city centre, right?",
+        "type": "sentence",
+        "createdAt": 1762946933547
+      },
+      {
+        "id": "1762946933547",
+        "chinese": "我需要一辆带儿童座椅的出租车。",
+        "english": "I need a taxi with a child seat.",
+        "type": "sentence",
+        "createdAt": 1762946933548
+      },
+      {
+        "id": "1762946933548",
+        "chinese": "这个国家有小费习惯吗？",
+        "english": "Is tipping customary in this country?",
+        "type": "sentence",
+        "createdAt": 1762946933549
+      },
+      {
+        "id": "1762946933549",
+        "chinese": "博物馆每周一闭馆。",
+        "english": "The museum is closed on mondays.",
+        "type": "sentence",
+        "createdAt": 1762946933550
+      },
+      {
+        "id": "1762946933550",
+        "chinese": "门票可以用卡支付吗？",
+        "english": "Can ipay the entrance fee by card.",
+        "type": "sentence",
+        "createdAt": 1762946933551
+      },
+      {
+        "id": "1762946933551",
+        "chinese": "雨后徒步路线很滑。",
+        "english": "The hiking trail is slippery after rain.",
+        "type": "sentence",
+        "createdAt": 1762946933552
+      },
+      {
+        "id": "1762946933552",
+        "chinese": "失物招领处在哪儿？",
+        "english": "Where is the lost and found office?",
+        "type": "sentence",
+        "createdAt": 1762946933553
+      },
+      {
+        "id": "1762946933553",
+        "chinese": "我要办理航班值机。",
+        "english": "I'd like to check in for my flight.",
+        "type": "sentence",
+        "createdAt": 1762946933554
+      },
+      {
+        "id": "1762946933554",
+        "chinese": "去岛上的渡轮，每小时一班。",
+        "english": "The ferry to the island leaves every hour.",
+        "type": "sentence",
+        "createdAt": 1762946933555
+      },
+      {
+        "id": "1762946933555",
+        "chinese": "有素食选择吗？",
+        "english": "Are there any vegetarian options?",
+        "type": "sentence",
+        "createdAt": 1762946933556
+      },
+      {
+        "id": "1762946933556",
+        "chinese": "能帮我叫医生吗？",
+        "english": "Could you call a doctor for me?",
+        "type": "sentence",
+        "createdAt": 1762946933557
+      },
+      {
+        "id": "1762946933557",
+        "chinese": "酒店提供免费早餐。",
+        "english": "The hotel provides free breakfast.",
+        "type": "sentence",
+        "createdAt": 1762946933558
+      },
+      {
+        "id": "1762946933558",
+        "chinese": "这条街晚上安全吗？",
+        "english": "Is this street safe at night?",
+        "type": "sentence",
+        "createdAt": 1762946933559
+      },
+      {
+        "id": "1762946933559",
+        "chinese": "纪念品店接受欧元支付。",
+        "english": "The souvenir shop accepts Euros.",
+        "type": "sentence",
+        "createdAt": 1762946933560
+      },
+      {
+        "id": "1762946933560",
+        "chinese": "这件衬衫有大一码的吗？",
+        "english": "Do you have this shirt in a larger size?",
+        "type": "sentence",
+        "createdAt": 1762946933561
+      },
+      {
+        "id": "1762946933561",
+        "chinese": "这款香水免税吗？",
+        "english": "Is this perfume tax free?",
+        "type": "sentence",
+        "createdAt": 1762946933562
+      },
+      {
+        "id": "1762946933562",
+        "chinese": "我想退回这件瑕疵品。",
+        "english": "I'd like to return this defective item.",
+        "type": "sentence",
+        "createdAt": 1762946933563
+      },
+      {
+        "id": "1762946933563",
+        "chinese": "我可以试穿这条裙子吗？",
+        "english": "Can I try this dress on?",
+        "type": "sentence",
+        "createdAt": 1762946933564
+      },
+      {
+        "id": "1762946933564",
+        "chinese": "车距在纸袋里。",
+        "english": "The receipt is in the paper bag.",
+        "type": "sentence",
+        "createdAt": 1762946933565
+      },
+      {
+        "id": "1762946933565",
+        "chinese": "学生有折扣吗？",
+        "english": "Are there any discounts for students?",
+        "type": "sentence",
+        "createdAt": 1762946933566
+      },
+      {
+        "id": "1762946933566",
+        "chinese": "这块牛排没煎熟。",
+        "english": "This steak is undercooked.",
+        "type": "sentence",
+        "createdAt": 1762946933567
+      },
+      {
+        "id": "1762946933567",
+        "chinese": "可以分开结账吗？",
+        "english": "Could I get the bill split?",
+        "type": "sentence",
+        "createdAt": 1762946933568
+      },
+      {
+        "id": "1762946933568",
+        "chinese": "这里的WiFi不稳定。",
+        "english": "The WiFi here is unstable.",
+        "type": "sentence",
+        "createdAt": 1762946933569
+      },
+      {
+        "id": "1762946933569",
+        "chinese": "有素食菜单吗？",
+        "english": "Is there a vegetarian menu?",
+        "type": "sentence",
+        "createdAt": 1762946933570
+      },
+      {
+        "id": "1762946933570",
+        "chinese": "这道菜有多辣？",
+        "english": "How spicy is this dish?",
+        "type": "sentence",
+        "createdAt": 1762946933571
+      },
+      {
+        "id": "1762946933571",
+        "chinese": "薯条可以换成沙拉吗？",
+        "english": "Can I substitute fries with salad?",
+        "type": "sentence",
+        "createdAt": 1762946933572
+      },
+      {
+        "id": "1762946933572",
+        "chinese": "这咖啡太苦了。",
+        "english": "This coffee is too bitter.",
+        "type": "sentence",
+        "createdAt": 1762946933573
+      },
+      {
+        "id": "1762946933573",
+        "chinese": "试衣间在哪里？",
+        "english": "Where is the fitting room?",
+        "type": "sentence",
+        "createdAt": 1762946933574
+      },
+      {
+        "id": "1762946933574",
+        "chinese": "提供礼品包装吗？",
+        "english": "Do you offer gift wrapping?",
+        "type": "sentence",
+        "createdAt": 1762946933575
+      },
+      {
+        "id": "1762946933575",
+        "chinese": "这个包的拉链卡住了。",
+        "english": "The zipper on this bag is stuck.",
+        "type": "sentence",
+        "createdAt": 1762946933576
+      },
+      {
+        "id": "1762946933576",
+        "chinese": "我对花生过敏。",
+        "english": "I'm allergic to peanuts.",
+        "type": "sentence",
+        "createdAt": 1762946933577
+      },
+      {
+        "id": "1762946933577",
+        "chinese": "可以用手机支付吗？",
+        "english": "Can ipay with mobile payment.",
+        "type": "sentence",
+        "createdAt": 1762946933578
+      },
+      {
+        "id": "1762946933578",
+        "chinese": "收银台在那边。",
+        "english": "The cashier is over there.",
+        "type": "sentence",
+        "createdAt": 1762946933579
+      },
+      {
+        "id": "1762946933579",
+        "chinese": "这个餐点送错了。",
+        "english": "This is the wrong order.",
+        "type": "sentence",
+        "createdAt": 1762946933580
+      },
+      {
+        "id": "1762946933580",
+        "chinese": "我来确认会议议程。",
+        "english": "Let me confirm the meeting agenda.",
+        "type": "sentence",
+        "createdAt": 1762946933581
+      },
+      {
+        "id": "1762946933581",
+        "chinese": "截止日期可调整。",
+        "english": "The deadline is flexible.",
+        "type": "sentence",
+        "createdAt": 1762946933582
+      },
+      {
+        "id": "1762946933582",
+        "chinese": "能转发邮件往来记录吗？",
+        "english": "Could you forward the email chain?",
+        "type": "sentence",
+        "createdAt": 1762946933583
+      },
+      {
+        "id": "1762946933583",
+        "chinese": "我会跟进客户。",
+        "english": "I'll follow up with the client.",
+        "type": "sentence",
+        "createdAt": 1762946933584
+      },
+      {
+        "id": "1762946933584",
+        "chinese": "演示需要更多数据支持。",
+        "english": "The presentation needs more data.",
+        "type": "sentence",
+        "createdAt": 1762946933585
+      },
+      {
+        "id": "1762946933585",
+        "chinese": "我们安排个zoom会议吧。",
+        "english": "Let's schedule a zoom call.",
+        "type": "sentence",
+        "createdAt": 1762946933586
+      },
+      {
+        "id": "1762946933586",
+        "chinese": "预算已获批。",
+        "english": "The budget has been approved.",
+        "type": "sentence",
+        "createdAt": 1762946933587
+      },
+      {
+        "id": "1762946933587",
+        "chinese": "可以延长试用期吗？",
+        "english": "Can we extend the trial period。",
+        "type": "sentence",
+        "createdAt": 1762946933588
+      },
+      {
+        "id": "1762946933588",
+        "chinese": "合同需法务审核。",
+        "english": "The contract needs legal review。",
+        "type": "sentence",
+        "createdAt": 1762946933589
+      },
+      {
+        "id": "1762946933589",
+        "chinese": "我会把任务分派给john。",
+        "english": "I'll delegate this task to john。",
+        "type": "sentence",
+        "createdAt": 1762946933590
+      },
+      {
+        "id": "1762946933590",
+        "chinese": "打印机没墨了。",
+        "english": "The printer is out of toer。",
+        "type": "sentence",
+        "createdAt": 1762946933591
+      },
+      {
+        "id": "1762946933591",
+        "chinese": "软件更新失败。",
+        "english": "The software update failed.",
+        "type": "sentence",
+        "createdAt": 1762946933592
+      },
+      {
+        "id": "1762946933592",
+        "chinese": "稍后发您会议纪要。",
+        "english": "I'll send you the minutes later.",
+        "type": "sentence",
+        "createdAt": 1762946933593
+      },
+      {
+        "id": "1762946933593",
+        "chinese": "我们优先处理紧急任务。",
+        "english": "Let's prioritize urgent tasks.",
+        "type": "sentence",
+        "createdAt": 1762946933594
+      },
+      {
+        "id": "1762946933594",
+        "chinese": "明天可能会下雨。",
+        "english": "It's supposed to rain tomorrow.",
+        "type": "sentence",
+        "createdAt": 1762946933595
+      },
+      {
+        "id": "1762946933595",
+        "chinese": "能帮我们拍张照吗？",
+        "english": "Could you take a photo for us?",
+        "type": "sentence",
+        "createdAt": 1762946933596
+      },
+      {
+        "id": "1762946933596",
+        "chinese": "垃圾车每周二来收垃圾。",
+        "english": "The garbage truck comes on tuesdays.",
+        "type": "sentence",
+        "createdAt": 1762946933597
+      },
+      {
+        "id": "1762946933597",
+        "chinese": "我手机快没电了。",
+        "english": "My phone battery is dying.",
+        "type": "sentence",
+        "createdAt": 1762946933598
+      },
+      {
+        "id": "1762946933598",
+        "chinese": "水龙头在漏水。",
+        "english": "The faucet is leaking.",
+        "type": "sentence",
+        "createdAt": 1762946933599
+      },
+      {
+        "id": "1762946933599",
+        "chinese": "你认识靠谱的水管工吗？",
+        "english": "Do you know a good plumber?",
+        "type": "sentence",
+        "createdAt": 1762946933600
+      },
+      {
+        "id": "1762946933600",
+        "chinese": "我们拼车省油费吧。",
+        "english": "Let's carpool to save gas.",
+        "type": "sentence",
+        "createdAt": 1762946933601
+      },
+      {
+        "id": "1762946933601",
+        "chinese": "空调坏了。",
+        "english": "The air conditioner is broken.",
+        "type": "sentence",
+        "createdAt": 1762946933602
+      },
+      {
+        "id": "1762946933602",
+        "chinese": "我把自己锁在门外了。",
+        "english": "I locked myself out of the house.",
+        "type": "sentence",
+        "createdAt": 1762946933603
+      },
+      {
+        "id": "1762946933603",
+        "chinese": "隔壁的狗整晚叫。",
+        "english": "The dog next door barks all night.",
+        "type": "sentence",
+        "createdAt": 1762946933604
+      },
+      {
+        "id": "1762946933604",
+        "chinese": "能借你的充电器吗？",
+        "english": "Can I borrow your charger?",
+        "type": "sentence",
+        "createdAt": 1762946933605
+      },
+      {
+        "id": "1762946933605",
+        "chinese": "健身房早上6点开门。",
+        "english": "The gym opens at six am.",
+        "type": "sentence",
+        "createdAt": 1762946933606
+      },
+      {
+        "id": "1762946933606",
+        "chinese": "电梯停用了。",
+        "english": "The elevator is out of service.",
+        "type": "sentence",
+        "createdAt": 1762946933607
+      },
+      {
+        "id": "1762946933607",
+        "chinese": "我们在公园入口见。",
+        "english": "Let's meet at the park entrance.",
+        "type": "sentence",
+        "createdAt": 1762946933608
+      },
+      {
+        "id": "1762946933608",
+        "chinese": "牛奶过期了。",
+        "english": "The milk has expired.",
+        "type": "sentence",
+        "createdAt": 1762946933609
+      },
+      {
+        "id": "1762946933609",
+        "chinese": "你给植物浇水了吗？",
+        "english": "Did you water the plants?",
+        "type": "sentence",
+        "createdAt": 1762946933610
+      },
+      {
+        "id": "1762946933610",
+        "chinese": "红绿灯坏了。",
+        "english": "The traffic light isn't working.",
+        "type": "sentence",
+        "createdAt": 1762946933611
+      },
+      {
+        "id": "1762946933611",
+        "chinese": "我现金快用完了。",
+        "english": "I'm running low on cash.",
+        "type": "sentence",
+        "createdAt": 1762946933612
+      },
+      {
+        "id": "1762946933612",
+        "chinese": "钥匙在门店下面。",
+        "english": "The key is under the doormat.",
+        "type": "sentence",
+        "createdAt": 1762946933613
+      },
+      {
+        "id": "1762946933613",
+        "chinese": "我们换更便宜的套餐吧。",
+        "english": "Let's switch to a cheaper plan.",
+        "type": "sentence",
+        "createdAt": 1762946933614
+      },
+      {
+        "id": "1762946933614",
+        "chinese": "快叫救护车。",
+        "english": "Call an ambulance immediately.",
+        "type": "sentence",
+        "createdAt": 1762946933615
+      },
+      {
+        "id": "1762946933615",
+        "chinese": "我扭伤了脚踝。",
+        "english": "I sprained my ankle.",
+        "type": "sentence",
+        "createdAt": 1762946933616
+      },
+      {
+        "id": "1762946933616",
+        "chinese": "最近的药店在哪儿？",
+        "english": "Where is the nearest pharmacy?",
+        "type": "sentence",
+        "createdAt": 1762946933617
+      },
+      {
+        "id": "1762946933617",
+        "chinese": "我胸口发闷。",
+        "english": "My chest feels tight.",
+        "type": "sentence",
+        "createdAt": 1762946933618
+      },
+      {
+        "id": "1762946933618",
+        "chinese": "厨房有煤气泄漏。",
+        "english": "There's a gas leak in the kitchen.",
+        "type": "sentence",
+        "createdAt": 1762946933619
+      },
+      {
+        "id": "1762946933619",
+        "chinese": "我被蚊子咬了。",
+        "english": "I've been bitten by a mosquito.",
+        "type": "sentence",
+        "createdAt": 1762946933620
+      },
+      {
+        "id": "1762946933620",
+        "chinese": "火警响了。",
+        "english": "The fire alarm is going off.",
+        "type": "sentence",
+        "createdAt": 1762946933621
+      },
+      {
+        "id": "1762946933621",
+        "chinese": "我需要续处方药。",
+        "english": "I need a prescription refill.",
+        "type": "sentence",
+        "createdAt": 1762946933622
+      },
+      {
+        "id": "1762946933622",
+        "chinese": "有人在大厅晕倒了。",
+        "english": "Someone fainted in the lobby.",
+        "type": "sentence",
+        "createdAt": 1762946933623
+      },
+      {
+        "id": "1762946933623",
+        "chinese": "我的护照被偷了。",
+        "english": "My passport was stolen.",
+        "type": "sentence",
+        "createdAt": 1762946933624
+      }
+    ]
+  }
+]

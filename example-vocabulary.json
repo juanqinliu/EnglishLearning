@@ -1,0 +1,157 @@
+[
+  {
+    "id": "1729699200000",
+    "name": "日常用语",
+    "createdAt": 1729699200000,
+    "items": [
+      {
+        "id": "1729699200001",
+        "chinese": "你好",
+        "english": "Hello",
+        "type": "word",
+        "createdAt": 1729699200001
+      },
+      {
+        "id": "1729699200002",
+        "chinese": "谢谢",
+        "english": "Thank you",
+        "type": "word",
+        "createdAt": 1729699200002
+      },
+      {
+        "id": "1729699200003",
+        "chinese": "再见",
+        "english": "Goodbye",
+        "type": "word",
+        "createdAt": 1729699200003
+      },
+      {
+        "id": "1729699200004",
+        "chinese": "很高兴见到你",
+        "english": "Nice to meet you",
+        "type": "sentence",
+        "createdAt": 1729699200004
+      },
+      {
+        "id": "1729699200005",
+        "chinese": "请帮助我",
+        "english": "Please help me",
+        "type": "sentence",
+        "createdAt": 1729699200005
+      }
+    ]
+  },
+  {
+    "id": "1729699300000",
+    "name": "常用动词",
+    "createdAt": 1729699300000,
+    "items": [
+      {
+        "id": "1729699300001",
+        "chinese": "学习",
+        "english": "learn",
+        "type": "word",
+        "createdAt": 1729699300001
+      },
+      {
+        "id": "1729699300002",
+        "chinese": "工作",
+        "english": "work",
+        "type": "word",
+        "createdAt": 1729699300002
+      },
+      {
+        "id": "1729699300003",
+        "chinese": "吃",
+        "english": "eat",
+        "type": "word",
+        "createdAt": 1729699300003
+      },
+      {
+        "id": "1729699300004",
+        "chinese": "喝",
+        "english": "drink",
+        "type": "word",
+        "createdAt": 1729699300004
+      },
+      {
+        "id": "1729699300005",
+        "chinese": "睡觉",
+        "english": "sleep",
+        "type": "word",
+        "createdAt": 1729699300005
+      },
+      {
+        "id": "1729699300006",
+        "chinese": "阅读",
+        "english": "read",
+        "type": "word",
+        "createdAt": 1729699300006
+      },
+      {
+        "id": "1729699300007",
+        "chinese": "写",
+        "english": "write",
+        "type": "word",
+        "createdAt": 1729699300007
+      },
+      {
+        "id": "1729699300008",
+        "chinese": "听",
+        "english": "listen",
+        "type": "word",
+        "createdAt": 1729699300008
+      }
+    ]
+  },
+  {
+    "id": "1729699400000",
+    "name": "实用句子",
+    "createdAt": 1729699400000,
+    "items": [
+      {
+        "id": "1729699400001",
+        "chinese": "我正在学习英语",
+        "english": "I am learning English",
+        "type": "sentence",
+        "createdAt": 1729699400001
+      },
+      {
+        "id": "1729699400002",
+        "chinese": "这是一个好主意",
+        "english": "This is a good idea",
+        "type": "sentence",
+        "createdAt": 1729699400002
+      },
+      {
+        "id": "1729699400003",
+        "chinese": "我不明白",
+        "english": "I don't understand",
+        "type": "sentence",
+        "createdAt": 1729699400003
+      },
+      {
+        "id": "1729699400004",
+        "chinese": "你能再说一遍吗？",
+        "english": "Could you say that again?",
+        "type": "sentence",
+        "createdAt": 1729699400004
+      },
+      {
+        "id": "1729699400005",
+        "chinese": "我需要更多时间",
+        "english": "I need more time",
+        "type": "sentence",
+        "createdAt": 1729699400005
+      },
+      {
+        "id": "1729699400006",
+        "chinese": "让我们开始吧",
+        "english": "Let's get started",
+        "type": "sentence",
+        "createdAt": 1729699400006
+      }
+    ]
+  }
+]
+
