@@ -4,9 +4,9 @@ const poolSize = 5; // Number of audio objects per sound
 let isInitialized = false;
 
 const sounds = {
-  type: '/sounds/type.wav',
-  error: '/sounds/error.wav',
-  correct: '/sounds/correct.wav',
+  type: './sounds/type.wav',
+  error: './sounds/error.wav',
+  correct: './sounds/correct.wav',
 };
 
 const createAudioPool = (src: string) => {
