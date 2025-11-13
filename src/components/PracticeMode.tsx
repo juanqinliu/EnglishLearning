@@ -25,7 +25,7 @@ export const PracticeMode: React.FC<PracticeModeProps> = ({ libraries, onLibrari
   const [showHint, setShowHint] = useState(false);
   const [sessionQueue, setSessionQueue] = useState<VocabularyItem[]>([]);
   const [currentIndex, setCurrentIndex] = useState<number>(0);
-  const [currentMistakes, setCurrentMistakes] = useState<number>(0);
+  const [hasViewedHint, setHasViewedHint] = useState<boolean>(false);
   const [sessionCompleted, setSessionCompleted] = useState<boolean>(false);
   const [sessionStats, setSessionStats] = useState({ correctItems: 0, wrongItems: 0 });
   const [wrongThisSession, setWrongThisSession] = useState<VocabularyItem[]>([]);
@@ -64,7 +64,7 @@ export const PracticeMode: React.FC<PracticeModeProps> = ({ libraries, onLibrari
       const nextItem = sessionQueue[nextIndex];
       setCurrentItem(nextItem);
       setUserInput('');
-      setCurrentMistakes(0);
+      setHasViewedHint(false);
       setOfferRemoveWrong(null);
       setTimeout(() => speak(nextItem.english), 300);
       setTimeout(() => inputRef.current?.focus(), 400);
@@ -77,40 +77,113 @@ export const PracticeMode: React.FC<PracticeModeProps> = ({ libraries, onLibrari
   const handleCorrectAnswer = () => {
     playSound('correct');
     if (selectedLibrary && currentItem) {
-      if (currentMistakes > 0) {
-        // 添加到全局错题词库
-        if (practiceScope === 'library') {
+      if (practiceScope === 'wrong' && selectedLibrary.id === 'global_wrong_items') {
+        // 错题练习模式的特殊逻辑
+        if (hasViewedHint) {
+          // 错题练习中出错了，将题目重新加入队列并进入下一题
+          setSessionStats(prev => ({ ...prev, wrongItems: prev.wrongItems + 1 }));
+          
+          // 将当前错题重新加入到队列的随机位置
+          setSessionQueue(prevQueue => {
+            const newQueue = [...prevQueue];
+            // 在剩余题目中随机选择一个位置插入
+            const remainingItems = newQueue.slice(currentIndex + 1);
+            if (remainingItems.length > 0) {
+              const randomIndex = Math.floor(Math.random() * remainingItems.length);
+              const insertPosition = currentIndex + 1 + randomIndex;
+              newQueue.splice(insertPosition, 0, currentItem);
+            } else {
+              // 如果没有剩余题目，添加到队列末尾
+              newQueue.push(currentItem);
+            }
+            return newQueue;
+          });
+          
+          // 进入下一题 - 使用延迟确保队列更新完成
+          setTimeout(() => {
+            // 重新检查是否有下一题
+            if (currentIndex + 1 < sessionQueue.length) {
+              advance();
+            } else {
+              // 如果当前是最后一题但队列已经更新，强制继续
+              const nextIndex = currentIndex + 1;
+              setCurrentIndex(nextIndex);
+              // 从更新后的队列中获取下一题
+              setSessionQueue(prevQueue => {
+                if (nextIndex < prevQueue.length) {
+                  const nextItem = prevQueue[nextIndex];
+                  setCurrentItem(nextItem);
+                  setUserInput('');
+                  setHasViewedHint(false);
+                  setOfferRemoveWrong(null);
+                  setTimeout(() => speak(nextItem.english), 300);
+                  setTimeout(() => inputRef.current?.focus(), 400);
+                }
+                return prevQueue;
+              });
+            }
+          }, 100);
+        } else {
+          // 错题练习中一次答对了，询问是否移除
+          setOfferRemoveWrong(currentItem.id);
+          setSessionStats(prev => ({ ...prev, correctItems: prev.correctItems + 1 }));
+          // 不调用advance，等待用户选择
+          return;
+        }
+      } else {
+        // 正常练习模式
+        if (hasViewedHint) {
+          // 查看了提示，添加到全局错题词库
           const updatedLibraries = addItemToWrongLibrary(libraries, currentItem, selectedLibrary.name);
           onLibrariesChange(updatedLibraries);
+          setSessionStats(prev => ({ ...prev, wrongItems: prev.wrongItems + 1 }));
+          setWrongThisSession(prev => [...prev, currentItem]);
+        } else {
+          setSessionStats(prev => ({ ...prev, correctItems: prev.correctItems + 1 }));
         }
-        setSessionStats(prev => ({ ...prev, wrongItems: prev.wrongItems + 1 }));
-        setWrongThisSession(prev => [...prev, currentItem]);
-      } else {
-        if (practiceScope === 'wrong' && selectedLibrary.id === 'global_wrong_items') {
-          setOfferRemoveWrong(currentItem.id);
-        }
-        setSessionStats(prev => ({ ...prev, correctItems: prev.correctItems + 1 }));
+        // 正常练习模式，直接进入下一题
+        setTimeout(advance, 800);
       }
     }
-    if (practiceScope === 'wrong' && selectedLibrary?.id === 'global_wrong_items') {
-      return;
-    }
-    setTimeout(advance, 800);
   };
 
   const handleInputChange = (value: string) => {
     if (!currentItem || userInput === currentItem.english) return;
 
     if (value.length > userInput.length) {
-      const lastCharIndex = value.length - 1;
-      const isCorrectChar = value[lastCharIndex] === currentItem.english[lastCharIndex];
-      playSound(isCorrectChar ? 'type' : 'error');
-      if (!isCorrectChar) {
-        setCurrentMistakes(m => m + 1);
+      // 检查所有新增的字符是否都正确
+      let correctInput = '';
+      let hasError = false;
+      
+      // 重新验证整个输入，而不只是新增部分
+      for (let i = 0; i < value.length; i++) {
+        if (i < currentItem.english.length && value[i] === currentItem.english[i]) {
+          correctInput += value[i];
+        } else {
+          hasError = true;
+          break; // 遇到第一个错误字符就停止
+        }
       }
+      
+      if (hasError) {
+        // 输入错误，播放错误音效，显示红色字母然后删除
+        playSound('error');
+        setUserInput(value); // 先显示错误的字母
+        
+        // 300ms后恢复到最后正确的输入状态
+        setTimeout(() => {
+          setUserInput(correctInput);
+        }, 300);
+        return; // 不继续处理
+      } else {
+        // 所有字符都正确，播放正确音效并更新输入
+        playSound('type');
+        setUserInput(correctInput);
+      }
+    } else {
+      // 删除字符的情况，直接更新
+      setUserInput(value);
     }
-
-    setUserInput(value);
 
     if (value === currentItem.english) {
       handleCorrectAnswer();
@@ -151,7 +224,7 @@ export const PracticeMode: React.FC<PracticeModeProps> = ({ libraries, onLibrari
     setCurrentIndex(0);
     setCurrentItem(items[0] || null);
     setUserInput('');
-    setCurrentMistakes(0);
+    setHasViewedHint(false);
     setSessionCompleted(false);
     setSessionStats({ correctItems: 0, wrongItems: 0 });
     setWrongThisSession([]);
@@ -202,14 +275,15 @@ export const PracticeMode: React.FC<PracticeModeProps> = ({ libraries, onLibrari
       if (e.key === 'Tab') {
         e.preventDefault();
         setShowHint(true);
+        setHasViewedHint(true); // 标记用户查看了提示
       }
       
       // 错题练习快捷键处理
-      if (offerRemoveWrong === currentItem?.id && practiceScope === 'wrong') {
+      if (offerRemoveWrong === currentItem?.id && practiceScope === 'wrong' && selectedLibrary?.id === 'global_wrong_items') {
         if (e.key === 'ArrowUp') {
           e.preventDefault();
           // 移除错题并进入下一题
-          if (selectedLibrary && currentItem && selectedLibrary.id === 'global_wrong_items') {
+          if (selectedLibrary && currentItem) {
             const updatedLibraries = removeItemFromWrongLibrary(libraries, currentItem.id);
             onLibrariesChange(updatedLibraries);
             setOfferRemoveWrong(null);
@@ -219,6 +293,7 @@ export const PracticeMode: React.FC<PracticeModeProps> = ({ libraries, onLibrari
         if (e.key === 'ArrowDown') {
           e.preventDefault();
           // 不移除，直接进入下一题
+          setOfferRemoveWrong(null);
           advance();
         }
       }
@@ -286,6 +361,7 @@ export const PracticeMode: React.FC<PracticeModeProps> = ({ libraries, onLibrari
                       if (wrongLibrary && wrongLibrary.items.length > 0) {
                         setSelectedLibraryId('global_wrong_items');
                         setPracticeScope('wrong');
+                        setPracticeType('all'); // 确保练习类型为全部
                       } else {
                         alert('错题本为空，请先进行练习产生错题！');
                       }
@@ -406,7 +482,10 @@ export const PracticeMode: React.FC<PracticeModeProps> = ({ libraries, onLibrari
                       移除该题出错本 (↑)
                     </button>
                     <button
-                      onClick={advance}
+                      onClick={() => {
+                        setOfferRemoveWrong(null);
+                        advance();
+                      }}
                       className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition shadow-md"
                     >
                       下一题 (↓)
@@ -418,25 +497,61 @@ export const PracticeMode: React.FC<PracticeModeProps> = ({ libraries, onLibrari
           </div>
         ) : selectedLibraryId && sessionCompleted ? (
           <div className="p-8 text-center">
-            <h3 className="text-2xl font-bold mb-2">练习完成</h3>
-            <p className="text-gray-600 mb-6">本次练习完成 {sessionQueue.length} 题，正确 {sessionStats.correctItems}，错误 {sessionStats.wrongItems}</p>
-            {wrongThisSession.length > 0 && (
-              <div className="text-left max-w-2xl mx-auto mb-6">
-                <p className="font-semibold mb-2">本次出错的句子：</p>
-                <ul className="space-y-2">
-                  {wrongThisSession.map(it => (
-                    <li key={it.id} className="p-3 bg-gray-50 rounded">
-                      <div className="text-gray-800">{it.english}</div>
-                      <div className="text-gray-500 text-sm">{it.chinese}</div>
-                    </li>
-                  ))}
-                </ul>
+            {practiceScope === 'wrong' && selectedLibrary?.id === 'global_wrong_items' ? (
+              // 错题练习完成界面
+              <div>
+                <div className="mb-6">
+                  <div className="text-6xl mb-4">🎉</div>
+                  <h3 className="text-3xl font-bold text-green-600 mb-2">恭喜完成错题练习！</h3>
+                  <p className="text-gray-600 mb-4">本次练习完成 {sessionQueue.length} 题，正确 {sessionStats.correctItems}，错误 {sessionStats.wrongItems}</p>
+                  <div className="text-lg text-gray-700">
+                    {sessionStats.wrongItems === 0 ? (
+                      <p className="text-green-600 font-semibold">✨ 太棒了！所有错题都一次答对了！</p>
+                    ) : (
+                      <p>继续加油，错题会在后续练习中重复出现直到完全掌握！</p>
+                    )}
+                  </div>
+                </div>
+                <div className="p-4 bg-gradient-to-r from-green-50 to-blue-50 rounded-lg">
+                  <p className="text-sm text-gray-600">
+                    💡 提示：你可以返回词库管理界面选择其他练习，或继续进行错题练习
+                  </p>
+                </div>
+              </div>
+            ) : (
+              // 正常练习完成界面
+              <div>
+                <h3 className="text-2xl font-bold mb-2">练习完成</h3>
+                <p className="text-gray-600 mb-6">本次练习完成 {sessionQueue.length} 题，正确 {sessionStats.correctItems}，错误 {sessionStats.wrongItems}</p>
+                {wrongThisSession.length > 0 && (
+                  <div className="text-left max-w-2xl mx-auto mb-6">
+                    <p className="font-semibold mb-2">本次出错的句子：</p>
+                    <ul className="space-y-2">
+                      {wrongThisSession.map(it => (
+                        <li key={it.id} className="p-3 bg-gray-50 rounded">
+                          <div className="text-gray-800">{it.english}</div>
+                          <div className="text-gray-500 text-sm">{it.chinese}</div>
+                        </li>
+                      ))}
+                    </ul>
+                  </div>
+                )}
+                <div className="flex justify-center gap-3">
+                  <button onClick={() => { 
+                    const wrongLibrary = libraries.find(lib => lib.id === 'global_wrong_items');
+                    if (wrongLibrary && wrongLibrary.items.length > 0) {
+                      setSelectedLibraryId('global_wrong_items');
+                      setPracticeScope('wrong');
+                      setPracticeType('all');
+                      buildQueue();
+                    } else {
+                      alert('错题本为空，请先进行练习产生错题！');
+                    }
+                  }} className="px-4 py-2 bg-rose-600 text-white rounded-lg hover:bg-rose-700 transition">开始错题练习</button>
+                  <button onClick={() => { setPracticeScope('library'); buildQueue(); }} className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition">重新开始</button>
+                </div>
               </div>
             )}
-            <div className="flex justify-center gap-3">
-              <button onClick={() => { setPracticeScope('wrong'); buildQueue(); }} className="px-4 py-2 bg-rose-600 text-white rounded-lg hover:bg-rose-700 transition">开始错题练习</button>
-              <button onClick={() => { setPracticeScope('library'); buildQueue(); }} className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition">重新开始</button>
-            </div>
           </div>
         ) : (
           <div className="text-center py-12 text-gray-400">
