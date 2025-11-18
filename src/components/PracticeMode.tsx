@@ -4,7 +4,7 @@ import { Volume2, Filter } from 'lucide-react';
 import { speak } from '../utils/speech';
 import { extractWordsFromItems } from '../utils/wordExtractor';
 import { playSound, initAudio } from '../utils/audioPlayer';
-import { addItemToWrongLibrary, removeItemFromWrongLibrary } from '../utils/storage';
+import { addItemToWrongLibrary, removeItemFromWrongLibrary, savePracticeProgress, loadPracticeProgress, clearPracticeProgress, PracticeProgress } from '../utils/storage';
 
 type PracticeType = 'all' | 'word' | 'sentence';
 type PracticeScope = 'library' | 'wrong';
@@ -30,7 +30,10 @@ export const PracticeMode: React.FC<PracticeModeProps> = ({ libraries, onLibrari
   const [sessionStats, setSessionStats] = useState({ correctItems: 0, wrongItems: 0 });
   const [wrongThisSession, setWrongThisSession] = useState<VocabularyItem[]>([]);
   const [offerRemoveWrong, setOfferRemoveWrong] = useState<string | null>(null);
+  const [savedProgress, setSavedProgress] = useState<PracticeProgress | null>(null);
+  const [showContinueOption, setShowContinueOption] = useState<boolean>(false);
   const inputRef = useRef<HTMLInputElement>(null);
+  const restoringRef = useRef<boolean>(false);
 
   const selectedLibrary = libraries.find(lib => lib.id === selectedLibraryId);
 
@@ -57,6 +60,54 @@ export const PracticeMode: React.FC<PracticeModeProps> = ({ libraries, onLibrari
     if (currentItem) speak(currentItem.english);
   }, [currentItem]);
 
+  // 保存当前练习进度
+  const saveCurrentProgress = useCallback(() => {
+    if (selectedLibraryId && sessionQueue.length > 0 && currentIndex < sessionQueue.length) {
+      const progress: PracticeProgress = {
+        libraryId: selectedLibraryId,
+        practiceType,
+        practiceScope,
+        sessionQueue,
+        currentIndex,
+        sessionStats,
+        wrongThisSession,
+        timestamp: Date.now()
+      };
+      savePracticeProgress(progress);
+    }
+  }, [selectedLibraryId, practiceType, practiceScope, sessionQueue, currentIndex, sessionStats, wrongThisSession]);
+
+  // 恢复保存的练习进度
+  const restoreProgress = useCallback((progress: PracticeProgress) => {
+    // 进入恢复模式，跳过后续一次性的副作用（如 buildQueue、默认类型/范围重置）
+    restoringRef.current = true;
+    setSelectedLibraryId(progress.libraryId);
+    setPracticeType(progress.practiceType);
+    setPracticeScope(progress.practiceScope);
+    setSessionQueue(progress.sessionQueue);
+    setCurrentIndex(progress.currentIndex);
+    setSessionStats(progress.sessionStats);
+    setWrongThisSession(progress.wrongThisSession);
+    setCurrentItem(progress.sessionQueue[progress.currentIndex] || null);
+    setUserInput('');
+    setHasViewedHint(false);
+    setSessionCompleted(false);
+    setOfferRemoveWrong(null);
+    setShowContinueOption(false);
+    setSavedProgress(null);
+
+    // 播放当前题目
+    if (progress.sessionQueue[progress.currentIndex]) {
+      setTimeout(() => speak(progress.sessionQueue[progress.currentIndex].english), 300);
+      setTimeout(() => inputRef.current?.focus(), 400);
+    }
+
+    // 在状态应用到下一次渲染后，允许副作用重新工作
+    setTimeout(() => {
+      restoringRef.current = false;
+    }, 0);
+  }, []);
+
   const advance = () => {
     if (currentIndex + 1 < sessionQueue.length) {
       const nextIndex = currentIndex + 1;
@@ -68,9 +119,30 @@ export const PracticeMode: React.FC<PracticeModeProps> = ({ libraries, onLibrari
       setOfferRemoveWrong(null);
       setTimeout(() => speak(nextItem.english), 300);
       setTimeout(() => inputRef.current?.focus(), 400);
+      // 立即保存进度（使用 nextIndex），避免用户快速离开导致进度回退一题
+      try {
+        if (selectedLibraryId && sessionQueue.length > 0) {
+          const progress: PracticeProgress = {
+            libraryId: selectedLibraryId,
+            practiceType,
+            practiceScope,
+            sessionQueue,
+            currentIndex: nextIndex,
+            sessionStats,
+            wrongThisSession,
+            timestamp: Date.now()
+          };
+          savePracticeProgress(progress);
+        }
+      } catch {}
     } else {
       setCurrentItem(null);
       setSessionCompleted(true);
+      // 练习完成，清除保存的进度
+      clearPracticeProgress();
+      // 同时清理内部的继续练习提示状态，避免后续副作用触发误重建
+      setShowContinueOption(false);
+      setSavedProgress(null);
     }
   };
 
@@ -141,6 +213,26 @@ export const PracticeMode: React.FC<PracticeModeProps> = ({ libraries, onLibrari
         } else {
           setSessionStats(prev => ({ ...prev, correctItems: prev.correctItems + 1 }));
         }
+        // 为避免用户在 advance 延迟期间离开导致保存为上一题索引，这里先保存 nextIndex 的进度
+        try {
+          if (selectedLibraryId && sessionQueue.length > 0) {
+            const nextIndex = Math.min(currentIndex + 1, sessionQueue.length - 1);
+            const progress: PracticeProgress = {
+              libraryId: selectedLibraryId,
+              practiceType,
+              practiceScope,
+              sessionQueue,
+              currentIndex: nextIndex,
+              sessionStats: {
+                correctItems: hasViewedHint ? sessionStats.correctItems : sessionStats.correctItems + 1,
+                wrongItems: hasViewedHint ? sessionStats.wrongItems + 1 : sessionStats.wrongItems,
+              },
+              wrongThisSession: hasViewedHint ? [...wrongThisSession, currentItem] : wrongThisSession,
+              timestamp: Date.now()
+            };
+            savePracticeProgress(progress);
+          }
+        } catch {}
         // 正常练习模式，直接进入下一题
         setTimeout(advance, 800);
       }
@@ -235,6 +327,47 @@ export const PracticeMode: React.FC<PracticeModeProps> = ({ libraries, onLibrari
     }
   }, [selectedLibrary, practiceScope, practiceType]);
 
+  // 是否存在当前激活的练习会话（正在做题）
+  const hasActiveSession = useMemo(() => {
+    return sessionQueue.length > 0 && !sessionCompleted && currentItem !== null;
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [sessionQueue.length, sessionCompleted, currentItem]);
+
+  // 读取本地保存的练习进度（始终维护最新值；是否展示由 hasActiveSession 决定）
+  useEffect(() => {
+    const progress = loadPracticeProgress();
+    if (progress && libraries.length > 0) {
+      const library = libraries.find(lib => lib.id === progress.libraryId);
+      if (library) {
+        setSavedProgress(progress);
+      } else {
+        clearPracticeProgress();
+        setSavedProgress(null);
+      }
+    } else {
+      setSavedProgress(null);
+    }
+  }, [libraries]);
+
+  // 仅当所选词库与保存的进度对应，且当前没有激活的会话时，展示“继续练习/重新开始”
+  useEffect(() => {
+    if (savedProgress && selectedLibraryId === savedProgress.libraryId && !hasActiveSession) {
+      setShowContinueOption(true);
+    } else {
+      setShowContinueOption(false);
+    }
+  }, [selectedLibraryId, savedProgress, hasActiveSession]);
+
+  // 当切换词库时，优先检查本地是否有该词库的未完成进度，以便及时显示“继续练习”
+  useEffect(() => {
+    if (!selectedLibraryId) return;
+    if (sessionCompleted) return;
+    const latest = loadPracticeProgress();
+    if (latest && latest.libraryId === selectedLibraryId) {
+      setSavedProgress(latest);
+    }
+  }, [selectedLibraryId, sessionCompleted]);
+
   // 处理从词库管理界面传来的初始词库选择
   useEffect(() => {
     if (initialLibraryId && libraries.length > 0) {
@@ -250,21 +383,35 @@ export const PracticeMode: React.FC<PracticeModeProps> = ({ libraries, onLibrari
   }, [initialLibraryId, libraries, onLibraryIdUsed]);
 
   useEffect(() => {
-    if (selectedLibraryId) {
-      setPracticeType('all');
-      if (selectedLibraryId === 'global_wrong_items') {
-        setPracticeScope('wrong');
-      } else {
-        setPracticeScope('library');
-      }
+    if (!selectedLibraryId) return;
+    // 恢复过程中或存在可继续的进度时，不要覆盖已保存的练习类型/范围
+    if (restoringRef.current) return;
+    // 完成后保持静止，不做任何重置
+    if (sessionCompleted) return;
+    if (savedProgress && savedProgress.libraryId === selectedLibraryId) return;
+    setPracticeType('all');
+    if (selectedLibraryId === 'global_wrong_items') {
+      setPracticeScope('wrong');
+    } else {
+      setPracticeScope('library');
     }
-  }, [selectedLibraryId]);
+  }, [selectedLibraryId, savedProgress, sessionCompleted]);
 
   useEffect(() => {
-    if (selectedLibraryId) {
-      buildQueue();
+    if (!selectedLibraryId) return;
+    // 恢复过程中或存在可继续的进度/正在进行会话时，不要自动重建队列
+    if (restoringRef.current) return;
+    if (hasActiveSession) return;
+    if (sessionCompleted) return;
+    if (savedProgress && savedProgress.libraryId === selectedLibraryId) return;
+    // 再做一次同步检查，防止初次进入时 buildQueue 先触发导致错过继续练习
+    const latest = loadPracticeProgress();
+    if (latest && latest.libraryId === selectedLibraryId) {
+      setSavedProgress(latest);
+      return;
     }
-  }, [selectedLibraryId, practiceType, practiceScope, buildQueue]);
+    buildQueue();
+  }, [selectedLibraryId, practiceType, practiceScope, buildQueue, savedProgress, hasActiveSession, sessionCompleted]);
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -315,6 +462,36 @@ export const PracticeMode: React.FC<PracticeModeProps> = ({ libraries, onLibrari
   }, [handleSpeak, offerRemoveWrong, currentItem, practiceScope, selectedLibrary, advance]);
 
 
+  const displayProgress = useMemo(() => {
+    if (sessionQueue.length === 0) return 0;
+    if (sessionCompleted) return sessionQueue.length;
+    return Math.min(currentIndex + 1, sessionQueue.length);
+  }, [sessionCompleted, currentIndex, sessionQueue.length]);
+
+  // 页面隐藏/离开时自动保存一次，避免进度丢失
+  useEffect(() => {
+    const onVis = () => {
+      if (document.visibilityState === 'hidden') {
+        saveCurrentProgress();
+      }
+    };
+    document.addEventListener('visibilitychange', onVis);
+    return () => document.removeEventListener('visibilitychange', onVis);
+  }, [saveCurrentProgress]);
+
+  // 页面卸载或隐藏到后台的兜底保存
+  useEffect(() => {
+    const onUnload = () => {
+      try { saveCurrentProgress(); } catch {}
+    };
+    window.addEventListener('beforeunload', onUnload);
+    window.addEventListener('pagehide', onUnload);
+    return () => {
+      window.removeEventListener('beforeunload', onUnload);
+      window.removeEventListener('pagehide', onUnload);
+    };
+  }, [saveCurrentProgress]);
+
   return (
     <div className="max-w-6xl mx-auto p-6">
       <div className="bg-white rounded-lg shadow-lg p-6 relative z-0">
@@ -324,7 +501,12 @@ export const PracticeMode: React.FC<PracticeModeProps> = ({ libraries, onLibrari
             <label className="block text-sm font-medium text-gray-700 mb-2">选择词库</label>
             <select
               value={selectedLibraryId}
-              onChange={(e) => setSelectedLibraryId(e.target.value)}
+              onChange={(e) => {
+                if (hasActiveSession) {
+                  try { saveCurrentProgress(); } catch {}
+                }
+                setSelectedLibraryId(e.target.value);
+              }}
               className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500"
             >
               <option value="">请选择词库...</option>
@@ -333,6 +515,44 @@ export const PracticeMode: React.FC<PracticeModeProps> = ({ libraries, onLibrari
               ))}
             </select>
           </div>
+
+          {showContinueOption && savedProgress && (
+            <div className="mb-4 p-4 bg-rose-50 border border-rose-200 rounded-lg">
+              <div className="flex items-center justify-between">
+                <div>
+                  <h3 className="text-lg font-semibold text-rose-800 mb-1">发现未完成的练习</h3>
+                  <p className="text-sm text-rose-700">
+                    词库: {libraries.find(lib => lib.id === savedProgress.libraryId)?.name} | 
+                    进度: {savedProgress.currentIndex + 1}/{savedProgress.sessionQueue.length} | 
+                    正确: {savedProgress.sessionStats.correctItems} | 
+                    错误: {savedProgress.sessionStats.wrongItems}
+                  </p>
+                </div>
+                <div className="flex gap-2">
+                  <button
+                    onClick={() => {
+                      if (savedProgress) {
+                        restoreProgress(savedProgress);
+                      }
+                    }}
+                    className="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition shadow-md"
+                  >
+                    继续练习
+                  </button>
+                  <button
+                    onClick={() => {
+                      clearPracticeProgress();
+                      setShowContinueOption(false);
+                      setSavedProgress(null);
+                    }}
+                    className="px-4 py-2 bg-gray-600 text-white rounded-lg hover:bg-gray-700 transition shadow-md"
+                  >
+                    重新开始
+                  </button>
+                </div>
+              </div>
+            </div>
+          )}
 
           {selectedLibraryId && (
             <>
@@ -374,7 +594,7 @@ export const PracticeMode: React.FC<PracticeModeProps> = ({ libraries, onLibrari
               </div>
               <div className="p-4 bg-gradient-to-r from-blue-50 to-purple-50 rounded-lg">
                 <div className="flex justify-around items-center">
-                  <div className="text-center"><p className="text-2xl font-bold text-blue-600">{Math.min(currentIndex + (currentItem ? 1 : 0), sessionQueue.length)}/{sessionQueue.length}</p><p className="text-xs text-gray-600">进度</p></div>
+                  <div className="text-center"><p className="text-2xl font-bold text-blue-600">{displayProgress}/{sessionQueue.length}</p><p className="text-xs text-gray-600">进度</p></div>
                   <div className="text-center"><p className="text-2xl font-bold text-green-600">{sessionStats.correctItems}</p><p className="text-xs text-gray-600">正确题数</p></div>
                   <div className="text-center"><p className="text-2xl font-bold text-red-600">{sessionStats.wrongItems}</p><p className="text-xs text-gray-600">错误题数</p></div>
                 </div>

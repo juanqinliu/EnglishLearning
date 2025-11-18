@@ -5,8 +5,20 @@ const STORAGE_KEY = 'english_learning_libraries';
 const INIT_FLAG_KEY = 'english_learning_initialized';
 const WRONG_BOOK_KEY = 'english_learning_wrong_book_v1';
 const WRONG_LIBRARY_ID = 'global_wrong_items';
+const PRACTICE_PROGRESS_KEY = 'english_learning_practice_progress';
 
 type WrongBook = Record<string, string[]>;
+
+export interface PracticeProgress {
+  libraryId: string;
+  practiceType: 'all' | 'word' | 'sentence';
+  practiceScope: 'library' | 'wrong';
+  sessionQueue: any[]; // VocabularyItem[]
+  currentIndex: number;
+  sessionStats: { correctItems: number; wrongItems: number };
+  wrongThisSession: any[]; // VocabularyItem[]
+  timestamp: number;
+}
 
 export const loadLibraries = (): VocabularyLibrary[] => {
   try {
@@ -172,3 +184,87 @@ export const removeItemFromWrongLibrary = (libraries: VocabularyLibrary[], itemI
   return updatedLibraries;
 };
 
+// 练习进度管理
+export const savePracticeProgress = (progress: PracticeProgress): void => {
+  try {
+    // 与已有进度合并，避免短时间内的旧数据覆盖新数据
+    const existingRaw = localStorage.getItem(PRACTICE_PROGRESS_KEY);
+    if (existingRaw) {
+      try {
+        const existing: PracticeProgress = JSON.parse(existingRaw);
+        if (existing && existing.libraryId === progress.libraryId) {
+          // 以更大的索引为准，防止回退一题
+          const mergedIndex = Math.max(existing.currentIndex || 0, progress.currentIndex || 0);
+
+          // 统计数取更大值，防止回退统计
+          const mergedCorrect = Math.max(
+            existing.sessionStats?.correctItems || 0,
+            progress.sessionStats?.correctItems || 0
+          );
+          const mergedWrong = Math.max(
+            existing.sessionStats?.wrongItems || 0,
+            progress.sessionStats?.wrongItems || 0
+          );
+
+          // 合并本次错题集合，按 id 或 english+chinese 去重
+          const exWrong = Array.isArray(existing.wrongThisSession) ? existing.wrongThisSession : [];
+          const newWrong = Array.isArray(progress.wrongThisSession) ? progress.wrongThisSession : [];
+          const map = new Map<string, any>();
+          const keyOf = (it: any) => (it?.id ? `id:${it.id}` : `txt:${it?.english}#${it?.chinese}`);
+          [...exWrong, ...newWrong].forEach(it => {
+            if (!it) return;
+            map.set(keyOf(it), it);
+          });
+
+          const merged: PracticeProgress = {
+            libraryId: progress.libraryId,
+            practiceType: progress.practiceType,
+            practiceScope: progress.practiceScope,
+            sessionQueue: progress.sessionQueue && progress.sessionQueue.length > 0 ? progress.sessionQueue : existing.sessionQueue,
+            currentIndex: mergedIndex,
+            sessionStats: { correctItems: mergedCorrect, wrongItems: mergedWrong },
+            wrongThisSession: Array.from(map.values()),
+            timestamp: Date.now(),
+          };
+
+          localStorage.setItem(PRACTICE_PROGRESS_KEY, JSON.stringify(merged));
+          return;
+        }
+      } catch {}
+    }
+    // 没有可合并的数据，或词库不同，直接保存
+    localStorage.setItem(PRACTICE_PROGRESS_KEY, JSON.stringify({ ...progress, timestamp: Date.now() }));
+  } catch (error) {
+    console.error('保存练习进度失败:', error);
+  }
+};
+
+export const loadPracticeProgress = (): PracticeProgress | null => {
+  try {
+    const data = localStorage.getItem(PRACTICE_PROGRESS_KEY);
+    if (!data) return null;
+    
+    const progress = JSON.parse(data);
+    // 检查进度是否过期（超过24小时）
+    const now = Date.now();
+    const maxAge = 24 * 60 * 60 * 1000; // 24小时
+    
+    if (now - progress.timestamp > maxAge) {
+      clearPracticeProgress();
+      return null;
+    }
+    
+    return progress;
+  } catch (error) {
+    console.error('加载练习进度失败:', error);
+    return null;
+  }
+};
+
+export const clearPracticeProgress = (): void => {
+  try {
+    localStorage.removeItem(PRACTICE_PROGRESS_KEY);
+  } catch (error) {
+    console.error('清除练习进度失败:', error);
+  }
+};
