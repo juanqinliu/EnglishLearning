@@ -1,12 +1,11 @@
 import React, { useState, useEffect, useMemo, useRef, useCallback } from 'react';
 import { VocabularyLibrary, VocabularyItem } from '../types';
 import { Volume2, Filter } from 'lucide-react';
-import { speak } from '../utils/speech';
-import { extractWordsFromItems } from '../utils/wordExtractor';
+import { speak, speakAsync } from '../utils/speech';
 import { playSound, initAudio } from '../utils/audioPlayer';
 import { addItemToWrongLibrary, removeItemFromWrongLibrary, savePracticeProgress, loadPracticeProgress, clearPracticeProgress, PracticeProgress } from '../utils/storage';
 
-type PracticeType = 'all' | 'word' | 'sentence';
+type PracticeType = 'dictation' | 'translation';
 type PracticeScope = 'library' | 'wrong';
 
 interface PracticeModeProps {
@@ -18,7 +17,7 @@ interface PracticeModeProps {
 
 export const PracticeMode: React.FC<PracticeModeProps> = ({ libraries, onLibrariesChange, initialLibraryId, onLibraryIdUsed }) => {
   const [selectedLibraryId, setSelectedLibraryId] = useState<string>('');
-  const [practiceType, setPracticeType] = useState<PracticeType>('all');
+  const [practiceType, setPracticeType] = useState<PracticeType>('dictation');
   const [practiceScope, setPracticeScope] = useState<PracticeScope>('library');
   const [currentItem, setCurrentItem] = useState<VocabularyItem | null>(null);
   const [userInput, setUserInput] = useState('');
@@ -37,23 +36,16 @@ export const PracticeMode: React.FC<PracticeModeProps> = ({ libraries, onLibrari
 
   const selectedLibrary = libraries.find(lib => lib.id === selectedLibraryId);
 
-  const extractedWords = useMemo(() => {
-    if (!selectedLibrary) return [];
-    return extractWordsFromItems(selectedLibrary.items);
-  }, [selectedLibrary]);
-
   const getFilteredItems = (): VocabularyItem[] => {
     if (!selectedLibrary) return [];
-    if (practiceType === 'all') return selectedLibrary.items;
-    if (practiceType === 'word') return extractedWords;
+    // 练习仅针对句子
     return selectedLibrary.items.filter(item => item.type === 'sentence');
   };
 
   const getTypeStats = () => {
-    if (!selectedLibrary) return { word: 0, sentence: 0, total: 0 };
-    const wordCount = extractedWords.length;
+    if (!selectedLibrary) return { sentence: 0, total: 0 };
     const sentenceCount = selectedLibrary.items.filter(item => item.type === 'sentence').length;
-    return { word: wordCount, sentence: sentenceCount, total: selectedLibrary.items.length };
+    return { sentence: sentenceCount, total: sentenceCount };
   };
 
   const handleSpeak = useCallback(() => {
@@ -82,7 +74,10 @@ export const PracticeMode: React.FC<PracticeModeProps> = ({ libraries, onLibrari
     // 进入恢复模式，跳过后续一次性的副作用（如 buildQueue、默认类型/范围重置）
     restoringRef.current = true;
     setSelectedLibraryId(progress.libraryId);
-    setPracticeType(progress.practiceType);
+    const mappedType: PracticeType = (progress.practiceType === 'word' || progress.practiceType === 'sentence' || progress.practiceType === 'all')
+      ? 'dictation'
+      : (progress.practiceType as PracticeType);
+    setPracticeType(mappedType);
     setPracticeScope(progress.practiceScope);
     setSessionQueue(progress.sessionQueue);
     setCurrentIndex(progress.currentIndex);
@@ -98,7 +93,9 @@ export const PracticeMode: React.FC<PracticeModeProps> = ({ libraries, onLibrari
 
     // 播放当前题目
     if (progress.sessionQueue[progress.currentIndex]) {
-      setTimeout(() => speak(progress.sessionQueue[progress.currentIndex].english), 300);
+      if (mappedType === 'dictation') {
+        setTimeout(() => speak(progress.sessionQueue[progress.currentIndex].english), 300);
+      }
       setTimeout(() => inputRef.current?.focus(), 400);
     }
 
@@ -117,7 +114,9 @@ export const PracticeMode: React.FC<PracticeModeProps> = ({ libraries, onLibrari
       setUserInput('');
       setHasViewedHint(false);
       setOfferRemoveWrong(null);
-      setTimeout(() => speak(nextItem.english), 300);
+      if (practiceType === 'dictation') {
+        setTimeout(() => speak(nextItem.english), 300);
+      }
       setTimeout(() => inputRef.current?.focus(), 400);
       // 立即保存进度（使用 nextIndex），避免用户快速离开导致进度回退一题
       try {
@@ -146,7 +145,7 @@ export const PracticeMode: React.FC<PracticeModeProps> = ({ libraries, onLibrari
     }
   };
 
-  const handleCorrectAnswer = () => {
+  const handleCorrectAnswer = async () => {
     playSound('correct');
     if (selectedLibrary && currentItem) {
       if (practiceScope === 'wrong' && selectedLibrary.id === 'global_wrong_items') {
@@ -197,6 +196,10 @@ export const PracticeMode: React.FC<PracticeModeProps> = ({ libraries, onLibrari
           }, 100);
         } else {
           // 错题练习中一次答对了，询问是否移除
+          if (practiceType === 'translation') {
+            // 翻译模式下先播放一次英文
+            speak(currentItem.english);
+          }
           setOfferRemoveWrong(currentItem.id);
           setSessionStats(prev => ({ ...prev, correctItems: prev.correctItems + 1 }));
           // 不调用advance，等待用户选择
@@ -233,8 +236,15 @@ export const PracticeMode: React.FC<PracticeModeProps> = ({ libraries, onLibrari
             savePracticeProgress(progress);
           }
         } catch {}
-        // 正常练习模式，直接进入下一题
-        setTimeout(advance, 800);
+        // 正常练习模式
+        if (practiceType === 'translation' && currentItem) {
+          // 翻译模式：等待英文语音播放完成后再进入下一题
+          await speakAsync(currentItem.english);
+          advance();
+        } else {
+          // 听写模式保持原有节奏感
+          setTimeout(advance, 800);
+        }
       }
     }
   };
@@ -295,12 +305,7 @@ export const PracticeMode: React.FC<PracticeModeProps> = ({ libraries, onLibrari
         // 对于错题练习，直接使用全局错题词库的内容
         if (selectedLibrary.id === 'global_wrong_items') {
           const wrongItems = selectedLibrary.items;
-          
-          // 应用练习类型过滤
-          if (practiceType === 'all') return wrongItems;
-          if (practiceType === 'word') {
-            return wrongItems.filter(item => item.type === 'word');
-          }
+          // 错题练习也仅针对句子
           return wrongItems.filter(item => item.type === 'sentence');
         }
         return [];
@@ -322,7 +327,9 @@ export const PracticeMode: React.FC<PracticeModeProps> = ({ libraries, onLibrari
     setWrongThisSession([]);
     setOfferRemoveWrong(null);
     if (items[0]) {
-      setTimeout(() => speak(items[0].english), 300);
+      if (practiceType === 'dictation') {
+        setTimeout(() => speak(items[0].english), 300);
+      }
       setTimeout(() => inputRef.current?.focus(), 400);
     }
   }, [selectedLibrary, practiceScope, practiceType]);
@@ -377,7 +384,7 @@ export const PracticeMode: React.FC<PracticeModeProps> = ({ libraries, onLibrari
       } else {
         setPracticeScope('library');
       }
-      setPracticeType('all');
+      setPracticeType('dictation');
       onLibraryIdUsed?.();
     }
   }, [initialLibraryId, libraries, onLibraryIdUsed]);
@@ -389,7 +396,7 @@ export const PracticeMode: React.FC<PracticeModeProps> = ({ libraries, onLibrari
     // 完成后保持静止，不做任何重置
     if (sessionCompleted) return;
     if (savedProgress && savedProgress.libraryId === selectedLibraryId) return;
-    setPracticeType('all');
+    setPracticeType('dictation');
     if (selectedLibraryId === 'global_wrong_items') {
       setPracticeScope('wrong');
     } else {
@@ -412,6 +419,19 @@ export const PracticeMode: React.FC<PracticeModeProps> = ({ libraries, onLibrari
     }
     buildQueue();
   }, [selectedLibraryId, practiceType, practiceScope, buildQueue, savedProgress, hasActiveSession, sessionCompleted]);
+
+  // 切换练习类型时：
+  // - 听写模式：自动播放当前题目的英文
+  // - 两种模式：自动聚焦到隐藏输入框，避免需要手动点击
+  useEffect(() => {
+    if (!selectedLibraryId) return;
+    if (sessionCompleted) return;
+    if (!currentItem) return;
+    if (practiceType === 'dictation') {
+      setTimeout(() => speak(currentItem.english), 200);
+    }
+    setTimeout(() => inputRef.current?.focus(), 250);
+  }, [practiceType, selectedLibraryId, sessionCompleted, currentItem]);
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -558,15 +578,12 @@ export const PracticeMode: React.FC<PracticeModeProps> = ({ libraries, onLibrari
             <>
               <div className="mb-4 relative z-50">
                 <label className="block text-sm font-medium text-gray-700 mb-2 flex items-center gap-2"><Filter className="w-4 h-4" />练习类型</label>
-                <div className="grid grid-cols-3 gap-3">
-                  <button onClick={() => setPracticeType('all')} className={`px-4 py-3 rounded-lg font-medium transition pointer-events-auto ${practiceType === 'all' ? 'bg-blue-600 text-white shadow-md' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'}`}>
-                    <div className="text-sm">全部</div><div className="text-lg font-bold">{getTypeStats().total}</div>
+                <div className="grid grid-cols-2 gap-3">
+                  <button onClick={() => setPracticeType('dictation')} className={`px-4 py-3 rounded-lg font-medium transition pointer-events-auto ${practiceType === 'dictation' ? 'bg-green-600 text-white shadow-md' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'}`}>
+                    <div className="text-sm">听写</div><div className="text-lg font-bold">{getTypeStats().sentence}</div>
                   </button>
-                  <button onClick={() => setPracticeType('word')} className={`px-4 py-3 rounded-lg font-medium transition pointer-events-auto ${practiceType === 'word' ? 'bg-green-600 text-white shadow-md' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'}`}>
-                    <div className="text-sm">单词</div><div className="text-lg font-bold">{getTypeStats().word}</div>
-                  </button>
-                  <button onClick={() => setPracticeType('sentence')} className={`px-4 py-3 rounded-lg font-medium transition pointer-events-auto ${practiceType === 'sentence' ? 'bg-purple-600 text-white shadow-md' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'}`}>
-                    <div className="text-sm">句子</div><div className="text-lg font-bold">{getTypeStats().sentence}</div>
+                  <button onClick={() => setPracticeType('translation')} className={`px-4 py-3 rounded-lg font-medium transition pointer-events-auto ${practiceType === 'translation' ? 'bg-purple-600 text-white shadow-md' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'}`}>
+                    <div className="text-sm">翻译</div><div className="text-lg font-bold">{getTypeStats().sentence}</div>
                   </button>
                 </div>
               </div>
@@ -581,7 +598,7 @@ export const PracticeMode: React.FC<PracticeModeProps> = ({ libraries, onLibrari
                       if (wrongLibrary && wrongLibrary.items.length > 0) {
                         setSelectedLibraryId('global_wrong_items');
                         setPracticeScope('wrong');
-                        setPracticeType('all'); // 确保练习类型为全部
+                        setPracticeType('dictation');
                       } else {
                         alert('错题本为空，请先进行练习产生错题！');
                       }
@@ -610,14 +627,24 @@ export const PracticeMode: React.FC<PracticeModeProps> = ({ libraries, onLibrari
               <div className="flex items-center justify-between mb-4">
                 <span className="text-xs px-3 py-1 bg-blue-200 text-blue-800 rounded-full">{currentItem.type === 'word' ? '单词' : '句子'}</span>
                 <button onClick={handleSpeak} className="flex items-center gap-2 px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition shadow-md">
-                  <Volume2 className="w-4 h-4" />重新播放 (Alt)
+                  <Volume2 className="w-4 h-4" />{practiceType === 'translation' ? '播放语音' : '重新播放'} (Alt)
                 </button>
               </div>
               <div className="text-center mb-6">
                 <Volume2 className="w-16 h-16 mx-auto text-blue-400 mb-4" />
-                <h3 className="text-xl font-bold text-gray-700 mb-2">🎧 听写模式</h3>
-                <p className="text-gray-600">请仔细聆听英文发音，然后输入你听到的内容</p>
+                {practiceType === 'translation' ? (
+                  <h3 className="text-xl font-bold text-gray-600">📝 翻译模式:请根据中文含义写出英文句子 </h3>
+                ) : (
+                  <h3 className="text-xl font-bold text-gray-600">🎧 听写模式:请根据英文含义写出中文句子 </h3>
+                )}
               </div>
+
+              {practiceType === 'translation' && (
+                <div className="text-center mb-4">
+                  {/* <p className="text-xs text-gray-500 mb-1">中文含义:</p> */}
+                  <p className="text-2xl font-semibold text-gray-800">{currentItem.chinese}</p>
+                </div>
+              )}
 
               <div className="relative mb-6" onClick={() => inputRef.current?.focus()}>
                 <div className="flex flex-wrap gap-x-1 items-center justify-center mb-4 cursor-text text-4xl font-mono tracking-wider">
@@ -677,10 +704,12 @@ export const PracticeMode: React.FC<PracticeModeProps> = ({ libraries, onLibrari
                 />
               </div>
 
-              <div className="text-center mb-4 mt-40">
-                <p className="text-xs text-gray-500 mb-1">中文含义:</p>
-                <p className="text-base font-medium text-gray-700">{currentItem.chinese}</p>
-              </div>
+              {practiceType === 'dictation' && (
+                <div className="text-center mb-4 mt-40">
+                  <p className="text-xs text-gray-500 mb-1">中文含义:</p>
+                  <p className="text-base font-medium text-gray-700">{currentItem.chinese}</p>
+                </div>
+              )}
 
               {offerRemoveWrong === currentItem.id && practiceScope === 'wrong' && (
                 <div className="space-y-3">
@@ -762,7 +791,7 @@ export const PracticeMode: React.FC<PracticeModeProps> = ({ libraries, onLibrari
                     if (wrongLibrary && wrongLibrary.items.length > 0) {
                       setSelectedLibraryId('global_wrong_items');
                       setPracticeScope('wrong');
-                      setPracticeType('all');
+                      setPracticeType('dictation');
                       buildQueue();
                     } else {
                       alert('错题本为空，请先进行练习产生错题！');

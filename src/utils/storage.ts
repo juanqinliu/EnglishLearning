@@ -11,7 +11,7 @@ type WrongBook = Record<string, string[]>;
 
 export interface PracticeProgress {
   libraryId: string;
-  practiceType: 'all' | 'word' | 'sentence';
+  practiceType: 'all' | 'dictation' | 'translation' | 'word' | 'sentence';
   practiceScope: 'library' | 'wrong';
   sessionQueue: any[]; // VocabularyItem[]
   currentIndex: number;
